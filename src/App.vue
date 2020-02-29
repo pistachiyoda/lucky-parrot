@@ -1,9 +1,44 @@
 <template>
-  <div id="app">
-    <h1>Today's Your Lucky Parrot</h1>
-    <img alt="parrot" :src="path" />
-    <span>{{ parrot_name }}</span>
-    <button @click="show_random_parrot">ランダムなparrotを表示</button>
+  <div id="app" :style="{backgroundImage: 'url(' + this.path + ')'}">
+    <div id="overlay"></div>
+    <div id="content">
+      <p class="my-2" v-if="is_selected">Today's your lucky parrots is...</p>
+      <p class="my-2" v-else>Choose Today's your lucky parrots</p>
+      <div class="parrots d-flex my-4" v-if="!is_selected">
+        <img
+          v-for="(src, index) in this.random_parrots_list"
+          :key="index"
+          :style="{width: '60px', height: 'auto'}"
+          :src="src"
+        />
+      </div>
+      <button
+        type="button"
+        :style="{fontSize: '30px'}"
+        class="btn btn-info btn-lg"
+        v-show="!is_selected"
+        @click="show_random_parrot"
+      >
+        <div>Choose</div>
+        <div>today's Parrot</div>
+      </button>
+      <div class="parrots d-flex my-4" v-if="!is_selected">
+        <img
+          v-for="(src, index) in this.reverse_random_parrots_list"
+          :key="index"
+          :style="{width: '60px', height: 'auto'}"
+          :src="src"
+        />
+      </div>
+      <h2>{{ parrot_name }}</h2>
+      <img v-show="is_selected" class="my-1" alt="parrot" :src="path" />
+      <button
+        type="button"
+        class="btn btn-info my-2"
+        v-show="is_selected"
+        @click="show_random_parrot"
+      >Choose parrot again</button>
+    </div>
   </div>
 </template>
 
@@ -12,25 +47,80 @@ export default {
   name: "App",
   data: function() {
     return {
-      path: "",
-      parrot_name: "test"
+      is_selected: false,
+      path: "/images/parrot.gif",
+      parrot_name: "",
+      random_parrots_list: [],
+      reverse_random_parrots_list: []
     };
   },
   methods: {
     show_random_parrot: async function() {
+      const parrot_array = await this.get_all_parrot();
+      const path = parrot_array[this.get_random_int(parrot_array.length)];
+      this.path = path;
+      this.parrot_name = path.slice(8, -4);
+      this.is_selected = true;
+    },
+    get_ramdom_parrots: async function() {
+      const parrot_array = await this.get_all_parrot();
+      for (let i = 0; i < 9; i++) {
+        this.random_parrots_list.push(
+          parrot_array[this.get_random_int(parrot_array.length)]
+        );
+      }
+      this.get_reverse_ramdom_parrots();
+    },
+    get_reverse_ramdom_parrots: async function() {
+      for (let i = 0; i <= 8; i++) {
+        this.reverse_random_parrots_list[i] = this.random_parrots_list[8 - i];
+      }
+    },
+    get_all_parrot: async function() {
       const response = await fetch("/list.txt");
       const parrot_list = await response.text();
       const parrot_array = parrot_list.split("\n");
-      function getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max));
-      }
-      const path = parrot_array[getRandomInt(parrot_array.length)];
-      this.path = path;
-      this.parrot_name = path.slice(8, -4);
+      return parrot_array;
+    },
+    get_random_int: function(max) {
+      return Math.floor(Math.random() * Math.floor(max));
     }
+  },
+  mounted: function() {
+    this.get_ramdom_parrots();
+    this.get_reverse_ramdom_parrots();
   }
 };
 </script>
 
 <style>
+#app {
+  height: 100vh;
+  background-position: center;
+  padding-top: 100px;
+  font-family: "Press Start 2P";
+}
+#overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+#content {
+  z-index: 10;
+  position: relative;
+  flex-direction: column;
+  display: flex;
+  width: 600px;
+  margin: auto;
+  align-items: center;
+  background-color: whitesmoke;
+}
+img {
+  height: 400px;
+  width: auto;
+}
 </style>
