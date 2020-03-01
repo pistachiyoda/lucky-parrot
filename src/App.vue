@@ -1,12 +1,12 @@
 <template>
-  <div id="app" :style="{backgroundImage: 'url(' + this.path + ')'}">
+  <div id="app" :style="{backgroundImage: 'url(' + path + ')'}">
     <div id="overlay"></div>
     <div id="content" class="p-3">
       <p class="mb-2" v-if="is_selected">Today's your lucky parrots is...</p>
       <p class="mb-0" v-else>Choose today's your lucky parrot</p>
       <div class="parrots d-flex my-4" v-if="!is_selected">
         <img
-          v-for="(src, index) in this.random_parrots_list"
+          v-for="(src, index) in random_parrots_list"
           :key="index"
           class="random_parrots"
           :src="src"
@@ -25,7 +25,7 @@
       </button>
       <div class="parrots d-flex my-4" v-if="!is_selected">
         <img
-          v-for="(src, index) in this.reverse_random_parrots_list"
+          v-for="(src, index) in reverse_random_parrots_list"
           :key="index"
           class="random_parrots"
           :src="src"
@@ -33,12 +33,14 @@
       </div>
       <h2>{{ parrot_name }}</h2>
       <img v-show="is_selected" class="my-1" alt="parrot" :src="path" />
+      <a :href="tweet_url" class="btn btn-info btn-lg w-100 mt-1" v-show="is_selected">Tweet</a>
       <button
         type="button"
         class="btn btn-info btn-lg w-100 mt-1"
         v-show="is_selected"
         @click="show_random_parrot"
       >Choose parrot again</button>
+      <a v-show="is_selected" @click="reset">Back to Top</a>
     </div>
   </div>
 </template>
@@ -85,11 +87,40 @@ export default {
     },
     get_random_int: function(max) {
       return Math.floor(Math.random() * Math.floor(max));
+    },
+    reset: function() {
+      this.is_selected = false;
+      this.parrot_name = "";
+      this.path = "/images/parrot.gif";
+    },
+    set_params_data: function() {
+      let params = new URLSearchParams(location.search);
+      if (params.get("parrot_name") != null) {
+        this.parrot_name = params.get("parrot_name");
+        this.path = params.get("path");
+        this.is_selected = true;
+      }
+    }
+  },
+  computed: {
+    tweet_url: function() {
+      let parrot_params = new URLSearchParams();
+      let url_params = new URLSearchParams();
+      parrot_params.append("parrot_name", this.parrot_name);
+      parrot_params.append("path", this.path);
+      url_params.append(
+        "text",
+        "http://localhost:8080?" + parrot_params.toString()
+      );
+      let tweet_url =
+        "https://twitter.com/intent/tweet?" + url_params.toString();
+      return tweet_url;
     }
   },
   mounted: function() {
     this.get_ramdom_parrots();
     this.get_reverse_ramdom_parrots();
+    this.set_params_data();
   }
 };
 </script>
@@ -103,9 +134,6 @@ img {
   height: 200px;
   width: auto;
 }
-button {
-  font-size: 13px;
-}
 h2 {
   font-size: 18px;
 }
@@ -117,7 +145,7 @@ h2 {
   font-size: 16px;
 }
 .btn-lg {
-  font-size: 13px;
+  font-size: 10px;
 }
 #app {
   height: 100vh;
