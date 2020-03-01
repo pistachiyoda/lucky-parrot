@@ -1,32 +1,33 @@
 <template>
   <div id="app" :style="{backgroundImage: 'url(' + this.path + ')'}">
     <div id="overlay"></div>
-    <div id="content">
-      <p class="my-2" v-if="is_selected">Today's your lucky parrots is...</p>
-      <p class="my-2" v-else>Choose Today's your lucky parrots</p>
+    <div id="content" class="p-3">
+      <p class="mb-2" v-if="is_selected">Today's your lucky parrots is...</p>
+      <p class="mb-0" v-else>Choose today's your lucky parrot</p>
       <div class="parrots d-flex my-4" v-if="!is_selected">
         <img
           v-for="(src, index) in this.random_parrots_list"
           :key="index"
-          :style="{width: '60px', height: 'auto'}"
+          class="random_parrots"
           :src="src"
         />
       </div>
       <button
         type="button"
-        :style="{fontSize: '30px'}"
-        class="btn btn-info btn-lg"
+        class="btn btn-info btn-lg w-100"
         v-show="!is_selected"
         @click="show_random_parrot"
       >
-        <div>Choose</div>
-        <div>today's Parrot</div>
+        <div class="choose_btn">
+          <div>Choose</div>
+          <div>today's Parrot</div>
+        </div>
       </button>
       <div class="parrots d-flex my-4" v-if="!is_selected">
         <img
           v-for="(src, index) in this.reverse_random_parrots_list"
           :key="index"
-          :style="{width: '60px', height: 'auto'}"
+          class="random_parrots"
           :src="src"
         />
       </div>
@@ -34,7 +35,7 @@
       <img v-show="is_selected" class="my-1" alt="parrot" :src="path" />
       <button
         type="button"
-        class="btn btn-info my-2"
+        class="btn btn-info btn-lg w-100 mt-1"
         v-show="is_selected"
         @click="show_random_parrot"
       >Choose parrot again</button>
@@ -94,6 +95,30 @@ export default {
 </script>
 
 <style>
+p {
+  font-size: 12px;
+  text-align: center;
+}
+img {
+  height: 200px;
+  width: auto;
+}
+button {
+  font-size: 13px;
+}
+h2 {
+  font-size: 18px;
+}
+.random_parrots {
+  width: 30px;
+  height: auto;
+}
+.choose_btn {
+  font-size: 16px;
+}
+.btn-lg {
+  font-size: 13px;
+}
 #app {
   height: 100vh;
   background-position: center;
@@ -114,13 +139,53 @@ export default {
   position: relative;
   flex-direction: column;
   display: flex;
-  width: 600px;
+  width: 290px;
   margin: auto;
   align-items: center;
   background-color: whitesmoke;
 }
-img {
-  height: 400px;
-  width: auto;
+@media screen and (min-width: 768px) {
+  p {
+    font-size: 15px;
+  }
+  h2 {
+    font-size: 30px;
+  }
+  .random_parrots {
+    width: 60px;
+    height: auto;
+  }
+  .choose_btn {
+    font-size: 30px;
+  }
+  #app {
+    height: 100vh;
+    background-position: center;
+    padding-top: 100px;
+    font-family: "Press Start 2P";
+  }
+  #overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  #content {
+    z-index: 10;
+    position: relative;
+    flex-direction: column;
+    display: flex;
+    width: 600px;
+    margin: auto;
+    align-items: center;
+    background-color: whitesmoke;
+  }
+  img {
+    height: 400px;
+    width: auto;
+  }
 }
 </style>
