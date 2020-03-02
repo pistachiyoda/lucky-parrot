@@ -110,7 +110,7 @@ export default {
       parrot_params.append("path", this.path);
       url_params.append(
         "text",
-        "http://localhost:8080?" + parrot_params.toString()
+        "https://todays-lucky-parrot.netlify.com/?" + parrot_params.toString()
       );
       let tweet_url =
         "https://twitter.com/intent/tweet?" + url_params.toString();
