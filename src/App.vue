@@ -1,6 +1,9 @@
 <template>
   <div id="app" :style="{backgroundImage: 'url(' + path + ')'}">
     <div id="overlay"></div>
+    <a href="https://twitter.com/pistachiyoda">
+      <i class="fab fa-twitter-square"></i>
+    </a>
     <div id="content" class="p-3">
       <p class="mb-2" v-if="is_selected">Today's your lucky parrots is...</p>
       <p class="mb-0" v-else>Choose today's your lucky parrot</p>
@@ -150,6 +153,14 @@ a {
 .btn-lg {
   font-size: 10px;
 }
+.fa-twitter-square {
+  color: #1da1f2;
+  font-size: 50px;
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  z-index: 10;
+}
 #app {
   height: 100vh;
   background-position: center;
@@ -217,6 +228,14 @@ a {
   img {
     height: 400px;
     width: auto;
+  }
+  .fa-twitter-square {
+    color: #1da1f2;
+    font-size: 80px;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    z-index: 10;
   }
 }
 </style>
