@@ -33,14 +33,14 @@
       </div>
       <h2>{{ parrot_name }}</h2>
       <img v-show="is_selected" class="my-1" alt="parrot" :src="path" />
-      <a :href="tweet_url" class="btn btn-info btn-lg w-100 mt-1" v-show="is_selected">Tweet</a>
+      <a :href="tweet_url" class="btn btn-info btn-lg w-100 my-1" v-show="is_selected">Tweet</a>
       <button
         type="button"
-        class="btn btn-info btn-lg w-100 mt-1"
+        class="btn btn-warning btn-lg w-100 mt-1"
         v-show="is_selected"
         @click="show_random_parrot"
       >Choose parrot again</button>
-      <a v-show="is_selected" @click="reset">Back to Top</a>
+      <a class="mt-3" v-show="is_selected" @click="reset">Back to Top</a>
     </div>
   </div>
 </template>
@@ -136,6 +136,9 @@ img {
 }
 h2 {
   font-size: 18px;
+}
+a {
+  cursor: pointer;
 }
 .random_parrots {
   width: 30px;
