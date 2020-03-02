@@ -1,9 +1,14 @@
 <template>
   <div id="app" :style="{backgroundImage: 'url(' + path + ')'}">
     <div id="overlay"></div>
-    <a href="https://twitter.com/pistachiyoda">
-      <i class="fab fa-twitter-square"></i>
-    </a>
+    <div class="info d-flex">
+      <a href="https://cultofthepartyparrot.com/">
+        <img src="images/originalparrot.gif" />
+      </a>
+      <a href="https://twitter.com/pistachiyoda">
+        <i class="fab fa-twitter-square"></i>
+      </a>
+    </div>
     <div id="content" class="p-3">
       <p class="mb-2" v-if="is_selected">Today's your lucky parrots is...</p>
       <p class="mb-0" v-else>Choose today's your lucky parrot</p>
@@ -143,6 +148,10 @@ h2 {
 a {
   cursor: pointer;
 }
+div > a > img {
+  width: 70px;
+  height: auto;
+}
 .random_parrots {
   width: 30px;
   height: auto;
@@ -156,10 +165,14 @@ a {
 .fa-twitter-square {
   color: #1da1f2;
   font-size: 50px;
+  vertical-align: bottom;
+}
+.info {
   position: fixed;
   right: 10px;
   bottom: 10px;
   z-index: 10;
+  align-items: flex-end;
 }
 #app {
   height: 100vh;
@@ -192,6 +205,10 @@ a {
   }
   h2 {
     font-size: 30px;
+  }
+  div > a > img {
+    width: 120px;
+    height: auto;
   }
   .random_parrots {
     width: 60px;
@@ -232,10 +249,14 @@ a {
   .fa-twitter-square {
     color: #1da1f2;
     font-size: 80px;
+    vertical-align: bottom;
+  }
+  .info {
     position: fixed;
     right: 15px;
     bottom: 15px;
     z-index: 10;
+    align-items: flex-end;
   }
 }
 </style>
